@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: starting Asynctask");
         DownloadData downloadData = new DownloadData();
-        downloadData.execute("URL goes here");
+        downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml");
         Log.d(TAG, "onCreate: done");
 
     }
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                Log.d(TAG, "onPostExecute: Parameter is" + s);
+                Log.d(TAG, "onPostExecute: Parameter is " + s);
             }
 
             @Override
@@ -56,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
                     URL url = new URL(urlPath);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     int response = connection.getResponseCode();
-                    Log.d(TAG, "downloadXML: The response code was" + response);
+                    Log.d(TAG, "downloadXML: The response code was " + response);
                     //InputStream inputStream = connection.getInputStream();
                     //InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                     //BufferedReader reader = new BufferedReader(inputStreamReader);
                     //The three lines above are the long way of writing a buffered reader
                     //This lines contains all of them using method chaining.
-                    BufferedReader  reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     int charsRead;
                     char[] inputBuffer = new char[500];
 
@@ -78,14 +78,20 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     reader.close();
+                    return xmlResult.toString();
 
-                  //MalformedURLException must be invoked before IOException because it is a subclass
-                  // of IOException.
+                    //MalformedURLException must be invoked before IOException because it is a subclass
+                    // of IOException.
                 } catch (MalformedURLException e) {
                     Log.e(TAG, "downloadXML: Invalid Url " + e.getMessage());
                 } catch (IOException e) {
-                    Log.e(TAG, "downloadXML: Invalid Url" + e.getMessage());
+                    Log.e(TAG, "downloadXML: Invalid Url " + e.getMessage());
+                } catch (SecurityException e) {
+                    Log.e(TAG, "downloadXML: Security Exception. Needs  Permissions? " + e.getLocalizedMessage() );
+                    e.printStackTrace();
                 }
+
+                return null;
 
 
             }
