@@ -1,3 +1,5 @@
+package com.afrodroid.android.toptendownloader;
+
 public class FeedEntry {
     private String name;
     private String artist;
