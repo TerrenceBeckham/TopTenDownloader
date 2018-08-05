@@ -33,9 +33,13 @@ public class MainActivity extends AppCompatActivity {
             //progress bar would be displayed and the last String will contain all of the XML downloaded
             private static final String TAG = "DownloadData";
             @Override
+            //This is where the result of the XMLParsing is passed back to the UI thread
+            //This method is automatically called by the system after the doInBackground method has completed
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 Log.d(TAG, "onPostExecute: Parameter is " + s);
+                ParseApplications parseApplications = new ParseApplications();
+                parseApplications.parse(s);
             }
 
             @Override
@@ -85,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
                 } catch (MalformedURLException e) {
                     Log.e(TAG, "downloadXML: Invalid Url " + e.getMessage());
                 } catch (IOException e) {
-                    Log.e(TAG, "downloadXML: Invalid Url " + e.getMessage());
+                    Log.e(TAG, "downloadXML: Io Exception reading data:" + e.getMessage());
                 } catch (SecurityException e) {
-                    Log.e(TAG, "downloadXML: Security Exception. Needs  Permissions? " + e.getLocalizedMessage() );
+                    Log.e(TAG, "downloadXML: Security Exception. Needs  Permissions? " + e.getMessage());
                     e.printStackTrace();
                 }
 
