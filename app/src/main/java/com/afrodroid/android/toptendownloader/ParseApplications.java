@@ -50,12 +50,20 @@ public class ParseApplications {
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 String tagName = xxp.getName();
                 switch (eventType) {
+                    case XmlPullParser.START_TAG:
+//                        Log.d(TAG, "parse: Starting tag for " + tagName);
+                        if ("entry".equalsIgnoreCase(tagName)) {
+                            inEntry = true;
+                            currentRecord = new FeedEntry();
+                        }
+                        break;
+
                     case XmlPullParser.TEXT:
                         textValue = xxp.getText();
                         break;
 
                     case XmlPullParser.END_TAG:
-                        Log.d(TAG, "parse:Ending tag for" + tagName);
+//                        Log.d(TAG, "parse:Ending tag for" + tagName);
                         if (inEntry) {
                             if ("entry".equalsIgnoreCase(tagName)) {
                                 applications.add(currentRecord);
@@ -79,10 +87,10 @@ public class ParseApplications {
                 }
                 eventType = xxp.next();
             }
-            for (FeedEntry app : applications) {
-                Log.d(TAG, "***************");
-                Log.d(TAG, app.toString());
-            }
+//            for (FeedEntry app : applications) {
+//                Log.d(TAG, "***************");
+//                Log.d(TAG, app.toString());
+//            }
 
 
             //This will catch all exceptions
